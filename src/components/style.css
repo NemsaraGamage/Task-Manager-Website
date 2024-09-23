@@ -5,15 +5,13 @@
     font-family: 'Arial, sans-serif';
 }
 
-/* .input-form{
-    margin-left: 2%;
-} */
-
 .form-container{
-    display: flex;
     width: 95%;
     margin: 0 auto;
     margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap; /* Ensures items wrap on smaller screens */
+    gap: 20px; /* Adds spacing between items */
 }
 
 .list-container{

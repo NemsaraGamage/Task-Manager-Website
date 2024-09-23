@@ -18,6 +18,13 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+// add button
+import Stack from '@mui/material/Stack';
+import { green } from '@mui/material/colors';
+import Icon from '@mui/material/Icon';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+<link rel="stylesheet" 
+href="https://fonts.googleapis.com/icon?family=Material+Icons" />
 
 const MainPage = () => {
     const [selectedDate, setSelectedDate] = useState(null);
@@ -73,7 +80,7 @@ const MainPage = () => {
 
             {/* datepicker */}
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <Box sx={{ marginLeft: '20px', marginTop: '10px', width: '180px' }}>
+                <Box sx={{ marginTop: '10px', width: '180px' }}>
                     <DatePicker
                         label="Select a date"
                         value={selectedDate}
@@ -90,7 +97,7 @@ const MainPage = () => {
 
 
             {/* status */}
-            <Box sx={{ marginLeft: '20px' ,marginTop: '10px', minWidth: 120 }}>
+            <Box sx={{ marginTop: '10px',  width: '180px'}}>
                 <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-label">Status</InputLabel>
                     <Select
@@ -107,11 +114,39 @@ const MainPage = () => {
                 </FormControl>
             </Box>
 
+            {/* add button */}
+            <Stack direction="row" spacing={3} sx={{ marginTop: '22px', cursor: 'pointer' }} >
+                <AddCircleIcon sx={{ fontSize: '30px'}} />
+            </Stack>
 
         </div>
 
-        <div className='list-container'>
+        {/* list */}
+        <div class='mt-5'>
 
+            <div className='to-do-list'>
+                <p class="fs-2 text-center mt-4">To Do</p>
+
+                <div className='list-container'>
+
+                </div>
+            </div>
+
+            <div className='doing-list'>
+                <p class="fs-2 text-center mt-4">Doing</p>
+
+                <div className='list-container'>
+                    
+                </div>
+            </div>
+
+            <div className='done-list'>
+                <p class="fs-2 text-center mt-4">Done</p>
+
+                <div className='list-container'>
+                
+            </div>
+        </div>
             
         </div>
 
