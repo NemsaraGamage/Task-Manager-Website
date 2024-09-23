@@ -51,15 +51,15 @@
 }
 
 .custom-form-control {
-    min-height: 56px; /* Adjust as needed */
+    min-height: 40px; /* Adjust as needed */
     color: white;
     border: 1px solid #ccc; /* Optional: Add a border */
     border-radius: 4px; /* Optional: Add rounded corners */
 }
 
 .custom-form-control .MuiInputBase-root {
-    height: 40px; /* Adjust the height of the input */
-    margin-top: 10px;
+    height: 32px; /* Adjust the height of the input */
+    margin-top: 4px;
 }
 
 .custom-input-label {
@@ -77,8 +77,8 @@
 }
 
 .item1 p{
-    font-size: 22px;
-    margin: 10px 15px 0 15px;
+    font-size: 18px;
+    margin: 6px 15px 0 15px;
     color: white;
 }
 
@@ -88,14 +88,14 @@
 }
 
 .item2 p{
-    font-size: 22px;
-    margin: 10px 50px 0 50px;
+    font-size: 18px;
+    margin: 6px 50px 0 50px;
     color: white;
 }
 
 .delete-icon{
     color: white;
-    margin: 15px 50px 0 50px;
+    margin: 9px 50px 0 50px;
 }
 
 /* responsive */
