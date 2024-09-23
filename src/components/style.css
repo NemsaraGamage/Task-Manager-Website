@@ -1,0 +1,15 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Arial, sans-serif';
+}
+
+.list-container{
+    width: 95%;
+    border: 2px solid black;
+    margin: 0 auto;
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
