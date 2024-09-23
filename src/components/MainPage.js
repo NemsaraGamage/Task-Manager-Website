@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import './style.css';
-import NavBar from './NavBar'
+import NavBar from './NavBar';
 
 // Material UI
 import '@fontsource/roboto/300.css';
@@ -20,140 +20,199 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 // add button
 import Stack from '@mui/material/Stack';
-import { green } from '@mui/material/colors';
-import Icon from '@mui/material/Icon';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-<link rel="stylesheet" 
-href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+// delete icon
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 const MainPage = () => {
-    const [selectedDate, setSelectedDate] = useState(null);
+  const [taskTitle, setTaskTitle] = useState('');
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [status, setStatus] = useState('');
+  const [tasks, setTasks] = useState({ todo: [], doing: [], done: [] });
 
-    const [status , setStatus ] = React.useState('');
+  const handleAddTask = () => {
+    if (!taskTitle || !status) {
+      alert("Please fill in both the task title and status.");
+      return;
+    }
 
-    return (
-        <>
+    const newTask = {
+      title: taskTitle,
+      date: selectedDate ? selectedDate.format('MM/DD/YYYY') : null,
+      status: status,
+    };
 
-        <NavBar></NavBar>
+    // Add task to the respective category
+    if (status === 10) {
+      setTasks((prevTasks) => ({
+        ...prevTasks,
+        todo: [...prevTasks.todo, newTask],
+      }));
+    } else if (status === 20) {
+      setTasks((prevTasks) => ({
+        ...prevTasks,
+        doing: [...prevTasks.doing, newTask],
+      }));
+    } else if (status === 30) {
+      setTasks((prevTasks) => ({
+        ...prevTasks,
+        done: [...prevTasks.done, newTask],
+      }));
+    }
 
-        <p class="fs-2 text-center mt-4">Task's</p>
+    // Clear the form after adding the task
+    setTaskTitle('');
+    setSelectedDate(null);
+    setStatus('');
+  };
 
-        <div className='form-container'>
+  const handleChangeTaskStatus = (task, newStatus) => {
+    const removeTask = (list, taskToRemove) => list.filter((t) => t !== taskToRemove);
 
-            {/* input */}
-            <Box
-            component="form"
-            className="input-form"
-            sx={{ '& .MuiTextField-root': { m: 1, width: '50ch' } }}
-            noValidate
+    setTasks((prevTasks) => {
+      let updatedTasks = { ...prevTasks };
+
+      if (task.status === 10) {
+        updatedTasks.todo = removeTask(prevTasks.todo, task);
+      } else if (task.status === 20) {
+        updatedTasks.doing = removeTask(prevTasks.doing, task);
+      } else if (task.status === 30) {
+        updatedTasks.done = removeTask(prevTasks.done, task);
+      }
+
+      const updatedTask = { ...task, status: newStatus };
+
+      if (newStatus === 10) {
+        updatedTasks.todo = [...updatedTasks.todo, updatedTask];
+      } else if (newStatus === 20) {
+        updatedTasks.doing = [...updatedTasks.doing, updatedTask];
+      } else if (newStatus === 30) {
+        updatedTasks.done = [...updatedTasks.done, updatedTask];
+      }
+
+      return updatedTasks;
+    });
+  };
+
+  const renderTask = (task) => (
+    <div key={task.title} className="task-item">
+        <div className='item1'>
+            <p>{task.title}</p>
+        </div>
+        <div className='item2'>
+            <p>{task.date}</p>
+        </div>
+      <FormControl className="custom-form-control">
+        <Select
+            value={task.status}
+            onChange={(e) => handleChangeTaskStatus(task, e.target.value)}
+            className="custom-select"
+        >
+            <MenuItem value={10}>To Do</MenuItem>
+            <MenuItem value={20}>Doing</MenuItem>
+            <MenuItem value={30}>Done</MenuItem>
+        </Select>
+      </FormControl>
+
+      <DeleteForeverIcon className='delete-icon'></DeleteForeverIcon>
+    </div>
+  );
+
+  return (
+    <>
+      <NavBar />
+      <p className="fs-3 text-center mt-4">Tasks</p>
+
+      <div className='form-container'>
+        {/* input */}
+        <Box
+          component="form"
+          className="input-form"
+          noValidate
+        >
+          <TextField
+            id="standard-multiline-flexible"
+            label="Task Title"
+            multiline
+            maxRows={6}
+            variant="standard"
+            value={taskTitle}
+            onChange={(e) => setTaskTitle(e.target.value)}
+            sx={{
+              '& .MuiInput-underline:before': { borderBottomColor: '#31363F' },
+              '& .MuiInput-underline:hover:before': { borderBottomColor: '#31363F' },
+              '& .MuiInput-underline:after': { borderBottomColor: '#31363F' },
+              '& .MuiInputLabel-root': { color: 'gray' },
+              '& .MuiInputLabel-root.Mui-focused': {
+                color: '#31363F',
+                fontWeight: 'bold',
+              },
+            }}
+          />
+        </Box>
+
+        {/* datepicker */}
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <Box sx={{ marginTop: '10px', width: '180px' }}>
+            <DatePicker
+              label="Select a date"
+              value={selectedDate}
+              onChange={(newValue) => setSelectedDate(newValue)}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </Box>
+        </LocalizationProvider>
+
+        {/* status */}
+        <Box sx={{ marginTop: '10px', width: '180px' }}>
+          <FormControl fullWidth>
+            <InputLabel>Status</InputLabel>
+            <Select
+              value={status}
+              label="Status"
+              onChange={(e) => setStatus(e.target.value)}
             >
-                <TextField
-                    id="standard-multiline-flexible"
-                    label="Task Title"
-                    multiline
-                    maxRows={6}
-                    variant="standard"
-                    sx={{
-                        // Change the underline color
-                        '& .MuiInput-underline:before': {
-                        borderBottomColor: '#31363F',  // Default underline color
-                        },
-                        '& .MuiInput-underline:hover:before': {
-                        borderBottomColor: '#31363F',  // Hover color
-                        },
-                        '& .MuiInput-underline:after': {
-                        borderBottomColor: '#31363F',  // Underline color when focused
-                        },
-                        
-                        // Change the label color
-                        '& .MuiInputLabel-root': {
-                        color: 'gray',  // Default label color
-                        
-                        },
-                        '& .MuiInputLabel-root.Mui-focused': {
-                        color: '#31363F',  // Label color when focused
-                        fontWeight: 'bold',
-                        },
-                    }}
-                />
-            </Box>
+              <MenuItem value={10}>To Do</MenuItem>
+              <MenuItem value={20}>Doing</MenuItem>
+              <MenuItem value={30}>Done</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
 
-            {/* datepicker */}
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <Box sx={{ marginTop: '10px', width: '180px' }}>
-                    <DatePicker
-                        label="Select a date"
-                        value={selectedDate}
-                        onChange={(newValue) => setSelectedDate(newValue)}
-                        renderInput={(params) => (
-                            <TextField 
-                                {...params} 
-                               
-                            />
-                        )}
-                    />
-                </Box>
-            </LocalizationProvider>
+        {/* add button */}
+        <Stack direction="row" spacing={3} sx={{ marginTop: '22px', cursor: 'pointer' }} onClick={handleAddTask}>
+          <AddCircleIcon sx={{ fontSize: '30px' }} />
+        </Stack>
+      </div>
 
-
-            {/* status */}
-            <Box sx={{ marginTop: '10px',  width: '180px'}}>
-                <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Status</InputLabel>
-                    <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={status }
-                    label="Status"
-                    onChange={(e) => setStatus(e.target.value)}
-                    >
-                    <MenuItem value={10}>To Do</MenuItem>
-                    <MenuItem value={20}>Doing</MenuItem>
-                    <MenuItem value={30}>Done</MenuItem>
-                    </Select>
-                </FormControl>
-            </Box>
-
-            {/* add button */}
-            <Stack direction="row" spacing={3} sx={{ marginTop: '22px', cursor: 'pointer' }} >
-                <AddCircleIcon sx={{ fontSize: '30px'}} />
-            </Stack>
-
+      {/* list */}
+      <div className='container-list-items'>
+        {/* To Do list */}
+        <div className='to-do-list'>
+          <p className="fs-3 text-center mt-4">To Do</p>
+          <div className='list-container'>
+            {tasks.todo.map(renderTask)}
+          </div>
         </div>
 
-        {/* list */}
-        <div class='mt-5'>
-
-            <div className='to-do-list'>
-                <p class="fs-2 text-center mt-4">To Do</p>
-
-                <div className='list-container'>
-
-                </div>
-            </div>
-
-            <div className='doing-list'>
-                <p class="fs-2 text-center mt-4">Doing</p>
-
-                <div className='list-container'>
-                    
-                </div>
-            </div>
-
-            <div className='done-list'>
-                <p class="fs-2 text-center mt-4">Done</p>
-
-                <div className='list-container'>
-                
-            </div>
-        </div>
-            
+        {/* Doing list */}
+        <div className='doing-list'>
+          <p className="fs-3 text-center mt-4">Doing</p>
+          <div className='list-container'>
+            {tasks.doing.map(renderTask)}
+          </div>
         </div>
 
-        </>
-
-    )
-
-}
+        {/* Done list */}
+        <div className='done-list'>
+          <p className="fs-3 text-center mt-4">Done</p>
+          <div className='list-container'>
+            {tasks.done.map(renderTask)}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
 
 export default MainPage;
