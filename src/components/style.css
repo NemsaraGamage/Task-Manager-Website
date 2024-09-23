@@ -5,6 +5,17 @@
     font-family: 'Arial, sans-serif';
 }
 
+/* .input-form{
+    margin-left: 2%;
+} */
+
+.form-container{
+    display: flex;
+    width: 95%;
+    margin: 0 auto;
+    margin-top: 30px;
+}
+
 .list-container{
     width: 95%;
     border: 2px solid black;
