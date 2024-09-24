@@ -96,6 +96,7 @@
 .delete-icon{
     color: white;
     margin: 9px 50px 0 50px;
+    cursor: pointer;
 }
 
 /* responsive */

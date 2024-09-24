@@ -94,6 +94,24 @@ const MainPage = () => {
     });
   };
 
+  const deleteTask = (task) => {
+    const removeTask = (list, taskToRemove) => list.filter((t) => t !== taskToRemove);
+
+    setTasks((prevTasks) => {
+      let updatedTasks = { ...prevTasks };
+
+      if (task.status === 10) {
+        updatedTasks.todo = removeTask(prevTasks.todo, task);
+      } else if (task.status === 20) {
+        updatedTasks.doing = removeTask(prevTasks.doing, task);
+      } else if (task.status === 30) {
+        updatedTasks.done = removeTask(prevTasks.done, task);
+      }
+
+      return updatedTasks;
+    });
+  };
+
   const renderTask = (task) => (
     <div key={task.title} className="task-item">
         <div className='item1'>
@@ -114,7 +132,7 @@ const MainPage = () => {
         </Select>
       </FormControl>
 
-      <DeleteForeverIcon className='delete-icon'></DeleteForeverIcon>
+      <DeleteForeverIcon  onClick={() => deleteTask(task)} className='delete-icon'></DeleteForeverIcon>
     </div>
   );
 
